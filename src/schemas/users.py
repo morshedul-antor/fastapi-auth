@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 from pydantic.types import constr
+from datetime import datetime
 
 
 class UserBase(BaseModel):
@@ -17,19 +18,29 @@ class UserIn(UserBase):
 
 class UserOut(UserBase):
     id: int
-    name: str
-    phone: str
-    email: Optional[str] = None
 
     class Config:
         orm_mode = True
 
 
-class UserUpdate(UserBase):
+class UserUpdate(BaseModel):
     name: str
     phone: Optional[str] = None
     email: Optional[str] = None
 
 
 class UserPasswordUpdate(BaseModel):
+    password: str
+
+
+class UserAuthOut(UserBase):
+    created_at: Optional[datetime] = None
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
+class UserLogin(BaseModel):
+    identifier: str
     password: str
