@@ -12,7 +12,7 @@
 *********** add the following lines into .env ************
 DATABASE_URL=mysql+mysqlconnector://root:@localhost:3306/todos
 URL_ONE=http://localhost:3000
-URL_TWO=https://localhost:300
+URL_TWO=https://localhost:3000
 
 
 ******** run command for SECRET_KEY *********
@@ -24,4 +24,4 @@ ALGORITHM=HS256
 
 DATABASE_URL=mysql+mysqlconnector://root:@localhost:3306/todos
 URL_ONE=http://localhost:3000
-URL_TWO=https://localhost:300
+URL_TWO=https://localhost:3000
