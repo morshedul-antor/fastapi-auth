@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 
+
 class TodoBase(BaseModel):
        title: str
        task: Optional[str] = None

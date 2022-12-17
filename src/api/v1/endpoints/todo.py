@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from schemas import  TodoIn, TodoOut, TodoUpdate
-from exceptions.service_result import handle_result
+from exceptions import handle_result
 from sqlalchemy.orm import Session
 from db import get_db
 from typing import List
@@ -19,6 +19,12 @@ def create_todo(data_in: TodoIn, db: Session = Depends(get_db)):
     todo = todo_service.create_todo(db=db, data_in=data_in)
     return handle_result(todo)
 
+
+@router.get('/{id}', response_model=TodoOut)
+def get_one(id, db: Session = Depends(get_db)):
+    todo = todo_service.get_one(db, id)
+    return handle_result(todo)
+    
 
 @router.put('/{id}', response_model=TodoOut)
 def update_todo(id: int, todo_update: TodoUpdate, db: Session = Depends(get_db)):

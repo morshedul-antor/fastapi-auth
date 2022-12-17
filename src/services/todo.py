@@ -1,14 +1,15 @@
 from services import BaseService
 from repositories import todo_repo
 from models import ToDo
-from schemas import TodoBase, TodoIn, TodoUpdate
+from schemas import TodoIn, TodoUpdate
 from sqlalchemy.orm import Session
 from exceptions import ServiceResult, AppException
 from fastapi import status
 
+
 class TodoService(BaseService[ToDo, TodoIn, TodoUpdate]):
 
-    def all_todo(self, db:Session, skip: int, limit: int):
+    def all_todo(self, db:Session, skip:int, limit:int):
         all = self.repo.all_todo(db=db, skip=skip, limit=limit)
         
         if not all:
@@ -17,7 +18,7 @@ class TodoService(BaseService[ToDo, TodoIn, TodoUpdate]):
             return ServiceResult(all, status_code=status.HTTP_200_OK)
 
 
-    def create_todo(self, db: Session, data_in: TodoBase):
+    def create_todo(self, db:Session, data_in:TodoIn):
         todo = self.repo.create_todo(db=db, data_in=data_in)
 
         if not todo:
