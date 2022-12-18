@@ -57,6 +57,7 @@ class BaseRepo(Generic[ModelType, CreateSchemaType, UpdateSchemaType], ABSRepo):
         if count_results == True:
             return [{"results": len(query)}, data]
         return data
+        
 
     def get_by_key_first(self, db: Session, **kwargs):
         search_key = list(kwargs.items())[0][0]

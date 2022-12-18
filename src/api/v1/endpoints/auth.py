@@ -15,6 +15,6 @@ def login(data_in: UserLogin, db: Session = Depends(get_db)):
     return handle_result(user)
 
 
-@router.get('/auth', response_model=UserAuthOut)
+@router.get('/auth/', response_model=UserAuthOut)
 def auth(current_user: User = Depends(logged_in)):
     return current_user

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from api.v1.auth_deps import logged_in
-from schemas import  TodoIn, TodoOut, TodoUpdate
+from schemas import TodoBase, TodoIn, TodoOut, TodoOutUser, TodoUpdate
 from exceptions import handle_result
 from sqlalchemy.orm import Session
 from db import get_db
@@ -17,9 +17,15 @@ def all_todo(skip: int = 0, limit: int = 10,  db: Session = Depends(get_db), cur
 
 
 @router.post('/', response_model=TodoOut)
-def create_todo(data_in: TodoIn, db: Session = Depends(get_db)):
-    todo = todo_service.create_todo(db=db, data_in=data_in)
+def create_todo(data_in: TodoBase, db: Session = Depends(get_db), current_user: Session = Depends(logged_in)):
+    todo = todo_service.create_todo(db=db, data_in=data_in, user_id=current_user.id)
     return handle_result(todo)
+
+
+@router.get('/user-todo/', response_model=List[TodoOutUser])
+def user_todo(skip: int = 0, limit: int = 10,  db: Session = Depends(get_db), current_user: Session = Depends(logged_in)):
+    all = todo_service.get_with_pagination(db=db, skip=skip, limit=limit ,descending=True)
+    return handle_result(all)
 
 
 @router.get('/{id}', response_model=TodoOut)

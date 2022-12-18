@@ -8,10 +8,18 @@ class TodoBase(BaseModel):
 
 
 class TodoIn(TodoBase):
-       pass
-
+       user_id: Optional[int] = None
+       
 
 class TodoOut(TodoBase):
+       user_id: int
+       id: int
+
+       class Config:
+              orm_mode = True
+
+
+class TodoOutUser(TodoBase):
        id: int
 
        class Config:

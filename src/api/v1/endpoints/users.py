@@ -11,7 +11,7 @@ router = APIRouter()
 
 @router.get('/', response_model=List[UserOut])
 def all_user(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    all = user_service.get_with_pagination(db=db, skip=skip, limit=limit)
+    all = user_service.get_with_pagination(db=db, skip=skip, limit=limit, descending=True)
     return handle_result(all)
 
 

@@ -9,17 +9,8 @@ from fastapi import status
 
 class TodoService(BaseService[ToDo, TodoIn, TodoUpdate]):
 
-    def all_todo(self, db:Session, skip:int, limit:int):
-        all = self.repo.all_todo(db=db, skip=skip, limit=limit)
-        
-        if not all:
-            return ServiceResult([], status_code=status.HTTP_200_OK)
-        else:
-            return ServiceResult(all, status_code=status.HTTP_200_OK)
-
-
-    def create_todo(self, db:Session, data_in:TodoIn):
-        todo = self.repo.create_todo(db=db, data_in=data_in)
+    def create_todo(self, db:Session, data_in:TodoIn, user_id:int):
+        todo = self.repo.create_todo(db=db, data_in=data_in, user_id=user_id)
 
         if not todo:
             return ServiceResult(AppException.ServerError("Todo not created!"))
