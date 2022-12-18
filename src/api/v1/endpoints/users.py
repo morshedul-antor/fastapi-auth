@@ -1,4 +1,3 @@
-from urllib import response
 from fastapi import APIRouter, Depends
 from schemas import UserIn, UserOut, UserUpdate
 from exceptions import handle_result
