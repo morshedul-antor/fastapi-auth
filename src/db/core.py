@@ -8,6 +8,8 @@ load_dotenv()
 class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     DATABASE_URL: str = os.environ.get("DATABASE_URL")
+    SECRET_KEY: str = os.environ.get("SECRET_KEY")
+    ALGORITHM: str = os.environ.get("ALGORITHM")
    
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = [
         os.environ.get("URL_ONE"),

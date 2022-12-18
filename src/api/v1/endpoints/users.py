@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends
+from api.v1.auth_deps import logged_in
 from schemas import UserIn, UserOut, UserUpdate
 from exceptions import handle_result
 from sqlalchemy.orm import Session
@@ -21,12 +22,12 @@ def create_user(data_in: UserIn, db: Session = Depends(get_db)):
 
 
 @router.get('/{id}', response_model=UserOut)
-def get_one(id, db: Session = Depends(get_db)):
+def get_one(id, db: Session = Depends(get_db), current_user: Session = Depends(logged_in)):
     todo = user_service.get_one(db, id)
     return handle_result(todo)
 
 
 @router.put('/{id}', response_model=UserOut)
-def update_user(id: int, user_update: UserUpdate, db: Session = Depends(get_db)):
+def update_user(id: int, user_update: UserUpdate, db: Session = Depends(get_db), current_user: Session = Depends(logged_in)):
     update = user_service.update(db, id, data_update=user_update)
     return handle_result(update)
