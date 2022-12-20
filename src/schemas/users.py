@@ -44,3 +44,10 @@ class UserAuthOut(UserBase):
 class UserLogin(BaseModel):
     identifier: str
     password: str
+
+
+class ResultIn(BaseModel):
+    results: int
+
+    class Config:
+        orm_mode = True

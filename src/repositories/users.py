@@ -1,5 +1,4 @@
 from typing import Optional
-from sqlalchemy import desc
 from repositories import BaseRepo
 from schemas import UserIn, UserUpdate
 from models import User

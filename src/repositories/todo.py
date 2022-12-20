@@ -1,4 +1,3 @@
-from sqlalchemy import desc
 from repositories import BaseRepo
 from schemas import TodoIn, TodoUpdate 
 from models import ToDo
