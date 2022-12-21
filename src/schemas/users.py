@@ -17,6 +17,8 @@ class UserIn(UserBase):
 
 
 class UserOut(UserBase):
+    created_at: Optional[datetime] = None
+    log_info: Optional[datetime] = None
     id: int
 
     class Config:
@@ -35,6 +37,7 @@ class UserPasswordUpdate(BaseModel):
 
 class UserAuthOut(UserBase):
     created_at: Optional[datetime] = None
+    log_info: Optional[datetime] = None
     id: int
 
     class Config:

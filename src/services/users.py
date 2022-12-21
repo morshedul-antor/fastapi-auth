@@ -48,14 +48,14 @@ class UserService(BaseService[User, UserIn, UserUpdate]):
 
         # deactive user prevent
         # if user and user.is_active == False:
-        #     return ServiceResult(AppException.NotFound("You are not active user."))
+        #     return ServiceResult(AppException.NotFound("You are not active user!"))
 
         if user is not None:          
             # access token
             access_token = Token.create_access_token({"sub": user.id})
             return ServiceResult({"access_token": access_token, "token_type": "bearer"}, status_code=200)
         else:
-            return ServiceResult(AppException.NotFound("User not found"))
+            return ServiceResult(AppException.NotFound("User not found!"))
 
 
 

@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime
+from sqlalchemy.sql import func
 from models import BaseModel
 
 
@@ -11,6 +12,7 @@ class User(BaseModel):
        phone = Column(String(20), nullable=False)
        email = Column(String(30), nullable=True)
        password = Column(String(255), nullable=False)
+       log_info = Column(DateTime(timezone=True), default=func.now())
 
 
 #==============#
