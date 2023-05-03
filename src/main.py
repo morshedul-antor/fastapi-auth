@@ -10,7 +10,7 @@ from exceptions import AppExceptionCase, AppException, app_exception_handler, ge
 import api.v1.routes
 from db import settings
 
-app = FastAPI(title='FastAPI')
+app = FastAPI(title='FastAPI Auth')
 
 app.add_middleware(
     CORSMiddleware,
@@ -56,7 +56,7 @@ def custom_generic_exception_handler(request: Request, exc: Exception):
 # Root API
 @app.get("/")
 async def root():
-       return {"message": "CRUD Application FastAPI"}
+       return {"message": "FastAPI Authentication!"}
 
 
 app.include_router(api.v1.routes.api_router, prefix=settings.API_V1_STR)

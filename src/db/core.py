@@ -24,7 +24,7 @@ class Settings(BaseSettings):
             return v
         raise ValueError(v)
 
-    PROJECT_NAME: str = "CRUD FASTAPI"
+    PROJECT_NAME: str = "FastAPI Auth"
     SENTRY_DSN: Optional[HttpUrl] = None
 
     class Config:
