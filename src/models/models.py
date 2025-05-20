@@ -19,7 +19,7 @@ class User(BaseModel):
 # Todo Related #
 # ==============#
 class ToDo(BaseModel):
-    __tablename__ = "todo"
+    __tablename__ = "todos"
     title = Column(String(255))
     task = Column(Text, nullable=True)
     user_id = Column(Integer, ForeignKey("users.id"))
