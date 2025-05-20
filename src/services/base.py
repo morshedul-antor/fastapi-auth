@@ -1,12 +1,11 @@
-from typing import Generic, Type, TypeVar
-
-from fastapi import status
-from pydantic import BaseModel
-from sqlalchemy.orm import Session
-
-from db import Base
 from exceptions import AppException, ServiceResult
+from typing import Generic, Type, TypeVar
+from sqlalchemy.orm import Session
 from repositories import BaseRepo
+from pydantic import BaseModel
+from fastapi import status
+from db import Base
+
 
 ModelType = TypeVar('ModelType', bound=Base)  # type: ignore
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
