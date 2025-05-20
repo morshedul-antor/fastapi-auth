@@ -8,7 +8,11 @@ class TodoBase(BaseModel):
 
 
 class TodoIn(TodoBase):
-    user_id: Optional[int] = None
+    pass
+
+
+class TodoDBIn(TodoBase):
+    user_id: int
 
 
 class TodoOut(TodoBase):

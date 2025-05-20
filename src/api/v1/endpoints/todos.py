@@ -1,4 +1,4 @@
-from schemas import ResultIn, TodoBase, TodoOut, TodoOutUser, TodoUpdate
+from schemas import ResultIn, TodoIn, TodoOut, TodoOutUser, TodoUpdate
 from fastapi import APIRouter, Depends
 from api.v1.auth_deps import logged_in
 from exceptions import handle_result
@@ -18,7 +18,7 @@ def all_todo(skip: int = 0, limit: int = 10,  db: Session = Depends(get_db), cur
 
 
 @router.post('/', response_model=TodoOut)
-def create_todo(data_in: TodoBase, db: Session = Depends(get_db), current_user: Session = Depends(logged_in)):
+def create_todo(data_in: TodoIn, db: Session = Depends(get_db), current_user: Session = Depends(logged_in)):
     todo = todos_service.create_todo(
         db=db, data_in=data_in, user_id=current_user.id)
     return handle_result(todo)
