@@ -1,12 +1,11 @@
-from fastapi import status
-from sqlalchemy.orm import Session
-
-from exceptions import AppException, ServiceResult
-from models import User
-from repositories import user_repo
-from schemas import UserIn, UserUpdate
-from services import BaseService
 from utils import Token, password_hash, verify_password
+from exceptions import AppException, ServiceResult
+from schemas import UserIn, UserUpdate
+from repositories import users_repo
+from sqlalchemy.orm import Session
+from services import BaseService
+from fastapi import status
+from models import User
 
 
 class UserService(BaseService[User, UserIn, UserUpdate]):
@@ -57,4 +56,4 @@ class UserService(BaseService[User, UserIn, UserUpdate]):
             return ServiceResult(AppException.NotFound("User not found!"))
 
 
-user_service = UserService(User, user_repo)
+users_service = UserService(User, users_repo)

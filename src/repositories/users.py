@@ -14,4 +14,4 @@ class UserRepo(BaseRepo[User, UserIn, UserUpdate]):
         return db.query(self.model).filter(self.model.email == email_in).first()
 
 
-user_repo = UserRepo(User)
+users_repo = UserRepo(User)

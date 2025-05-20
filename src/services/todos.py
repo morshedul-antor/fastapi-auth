@@ -1,11 +1,10 @@
-from fastapi import status
-from sqlalchemy.orm import Session
-
 from exceptions import AppException, ServiceResult
-from models import ToDo
-from repositories import todo_repo
 from schemas import TodoIn, TodoUpdate
+from repositories import todos_repo
+from sqlalchemy.orm import Session
 from services import BaseService
+from fastapi import status
+from models import ToDo
 
 
 class TodoService(BaseService[ToDo, TodoIn, TodoUpdate]):
@@ -20,4 +19,4 @@ class TodoService(BaseService[ToDo, TodoIn, TodoUpdate]):
             return ServiceResult(todo, status_code=status.HTTP_201_CREATED)
 
 
-todo_service = TodoService(ToDo, todo_repo)
+todos_service = TodoService(ToDo, todos_repo)
