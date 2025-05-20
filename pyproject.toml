@@ -1,7 +1,7 @@
 [tool.ruff]
 line-length = 150
 fix = true
-exclude = ["build", "dist", ".venv", "env", ".env", "./src/alembic/", "**/__init__.py", "__pycache__"]
+exclude = ["build", "dist", ".venv", "env", ".env", "**/alembic/", "**/__init__.py", "__pycache__"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "C90"]

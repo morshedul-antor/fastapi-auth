@@ -25,9 +25,7 @@ class Token:
     def validate_token(token: str) -> TokenData:
         try:
             payload = jwt.decode(
-                token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM],
-                options={"verify_sub": False}
-            )
+                token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM], options={"verify_sub": False})
             user_id = payload.get("sub")
 
             if user_id is None:
