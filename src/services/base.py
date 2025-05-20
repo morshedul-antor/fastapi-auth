@@ -1,13 +1,14 @@
 from typing import Generic, Type, TypeVar
-from sqlalchemy.orm import Session
+
 from fastapi import status
-from db import Base
 from pydantic import BaseModel
-from repositories import BaseRepo
+from sqlalchemy.orm import Session
+
+from db import Base
 from exceptions import AppException, ServiceResult
+from repositories import BaseRepo
 
-
-ModelType = TypeVar('ModelType', bound=Base)
+ModelType = TypeVar('ModelType', bound=Base)  # type: ignore
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
 UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 ModelRepo = TypeVar("ModelRepo", bound=BaseRepo)
@@ -84,7 +85,8 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return ServiceResult(data, status_code=status.HTTP_202_ACCEPTED)
 
     def update_before_check(self, db: Session, id: int, data_update: UpdateSchemaType, **kwargs):
-        get_data = self.repo.get_by_two_key(db=db, skip=0, limit=10, descending=False, count_results=False, id=id, **kwargs)
+        get_data = self.repo.get_by_two_key(
+            db=db, skip=0, limit=10, descending=False, count_results=False, id=id, **kwargs)
         if not get_data:
             return ServiceResult(AppException.ServerError("Access denied"))
         return self.update(db=db, id=id, data_update=data_update)

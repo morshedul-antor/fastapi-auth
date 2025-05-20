@@ -1,18 +1,13 @@
+from jose import ExpiredSignatureError, JWTError, jwt
 from datetime import datetime, timedelta
+from exceptions import AppException
+from schemas import TokenData
 from typing import Optional
 from db import settings
-from jose import jwt, JWTError, ExpiredSignatureError
-from exceptions import *
-from schemas import TokenData
-
-
-# import logging
-
-# logging.basicConfig(level=logging.DEBUG)
-# logger = logging.getLogger(__name__)
 
 
 class Token:
+
     @staticmethod
     def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
         to_encode = data.copy()
@@ -29,8 +24,10 @@ class Token:
     @staticmethod
     def validate_token(token: str) -> TokenData:
         try:
-            payload = jwt.decode(token, settings.SECRET_KEY,
-                                 algorithms=[settings.ALGORITHM], options={"verify_sub": False})
+            payload = jwt.decode(
+                token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM],
+                options={"verify_sub": False}
+            )
             user_id = payload.get("sub")
 
             if user_id is None:
@@ -39,7 +36,7 @@ class Token:
             return token_data
 
         except ExpiredSignatureError:
-            raise AppException.BadRequest({"message": "Token expired"})
+            raise AppException.BadRequest({"message": "Token expired!"})
         except JWTError as err:
             print(err)
             raise AppException.CredentialsException()

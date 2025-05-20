@@ -1,16 +1,17 @@
-from services import BaseService
-from repositories import user_repo
-from models import User
-from schemas import UserIn, UserUpdate
-from sqlalchemy.orm import Session
-from exceptions import ServiceResult, AppException
 from fastapi import status
-from utils import password_hash, verify_password, Token
+from sqlalchemy.orm import Session
+
+from exceptions import AppException, ServiceResult
+from models import User
+from repositories import user_repo
+from schemas import UserIn, UserUpdate
+from services import BaseService
+from utils import Token, password_hash, verify_password
 
 
 class UserService(BaseService[User, UserIn, UserUpdate]):
 
-    def create_user(self, db:Session, data_in:UserIn, flush:bool):
+    def create_user(self, db: Session, data_in: UserIn, flush: bool):
         # phone & email check
         if self.repo.search_by_phone(db, data_in.phone):
             return ServiceResult(AppException.BadRequest("Phone number already exists!"))
@@ -30,7 +31,6 @@ class UserService(BaseService[User, UserIn, UserUpdate]):
             return ServiceResult(AppException.ServerError("Something went wrong!"))
         return ServiceResult(data, status_code=status.HTTP_201_CREATED)
 
-
     def is_auth(self, db: Session, identifier: str, password: str):
         user_by_email = self.repo.search_by_email(db, email_in=identifier)
         user_by_phone = self.repo.search_by_phone(db, phone_in=identifier)
@@ -42,7 +42,6 @@ class UserService(BaseService[User, UserIn, UserUpdate]):
         else:
             return None
 
-
     def login(self, db: Session, identifier: str, password: str):
         user: User = self.is_auth(db, identifier, password)
 
@@ -50,13 +49,12 @@ class UserService(BaseService[User, UserIn, UserUpdate]):
         # if user and user.is_active == False:
         #     return ServiceResult(AppException.NotFound("You are not active user!"))
 
-        if user is not None:          
+        if user is not None:
             # access token
             access_token = Token.create_access_token({"sub": user.id})
             return ServiceResult({"access_token": access_token, "token_type": "bearer"}, status_code=200)
         else:
             return ServiceResult(AppException.NotFound("User not found!"))
-
 
 
 user_service = UserService(User, user_repo)

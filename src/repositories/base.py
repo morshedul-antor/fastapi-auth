@@ -1,11 +1,11 @@
-from typing import Any, Generic, Optional, Type, TypeVar, List, Union
-from sqlalchemy import desc
-from sqlalchemy.orm import Session
-from db import Base
-from models import BaseModel
+from typing import Any, Generic, List, Optional, Type, TypeVar, Union
 from repositories.base_abstract import ABSRepo
+from sqlalchemy.orm import Session
+from models import BaseModel
+from sqlalchemy import desc
+from db import Base
 
-ModelType = TypeVar('ModelType', bound=Base)
+ModelType = TypeVar('ModelType', bound=Base)  # type: ignore
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
 UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 
@@ -48,22 +48,22 @@ class BaseRepo(Generic[ModelType, CreateSchemaType, UpdateSchemaType], ABSRepo):
 
         query = db.query(self.model).all()
 
-        if descending == True:
+        if descending:
             data = db.query(self.model).order_by(
                 desc(self.model.created_at)).offset(skip).limit(limit).all()
         else:
             data = db.query(self.model).offset(skip).limit(limit).all()
 
-        if count_results == True:
+        if count_results:
             return [{"results": len(query)}, data]
         return data
-        
 
     def get_by_key_first(self, db: Session, **kwargs):
         search_key = list(kwargs.items())[0][0]
         search_value = list(kwargs.items())[0][1]
 
-        query = db.query(self.model).filter(getattr(self.model, search_key) == search_value).first()
+        query = db.query(self.model).filter(
+            getattr(self.model, search_key) == search_value).first()
         return query
 
     def get_by_key(self, db: Session, skip: int, limit: int, descending: bool = False, count_results: bool = False, **kwargs):
@@ -73,14 +73,14 @@ class BaseRepo(Generic[ModelType, CreateSchemaType, UpdateSchemaType], ABSRepo):
         query = db.query(self.model).filter(
             getattr(self.model, search_key) == search_value).all()
 
-        if descending == True:
+        if descending:
             data = db.query(self.model).filter(getattr(self.model, search_key) == search_value).order_by(
                 desc(self.model.created_at)).offset(skip).limit(limit).all()
         else:
             data = db.query(self.model).filter(
                 getattr(self.model, search_key) == search_value).offset(skip).limit(limit).all()
 
-        if count_results == True:
+        if count_results:
             return [{"results": len(query)}, data]
         return data
 
@@ -91,18 +91,20 @@ class BaseRepo(Generic[ModelType, CreateSchemaType, UpdateSchemaType], ABSRepo):
         second_search_key = list(kwargs.items())[1][0]
         second_search_value = list(kwargs.items())[1][1]
 
-        query = db.query(self.model).filter(getattr(self.model, search_key) == search_value).filter(getattr(self.model, second_search_key) == second_search_value).all()
+        query = db.query(self.model).filter(getattr(self.model, search_key) == search_value).filter(
+            getattr(self.model, second_search_key) == second_search_value).all()
 
-        if descending == True:
+        if descending:
             data = db.query(
                 self.model).filter(
                 getattr(self.model, search_key) == search_value).filter(
                 getattr(self.model, second_search_key) == second_search_value).order_by(
                 desc(self.model.created_at)).offset(skip).limit(limit).all()
         else:
-            data = db.query(self.model).filter(getattr(self.model, search_key) == search_value).filter(getattr(self.model, second_search_key) == second_search_value).offset(skip).limit(limit).all()
+            data = db.query(self.model).filter(getattr(self.model, search_key) == search_value).filter(
+                getattr(self.model, second_search_key) == second_search_value).offset(skip).limit(limit).all()
 
-        if count_results == True:
+        if count_results:
             return [{"results": len(query)}, data]
         return data
 
@@ -113,7 +115,7 @@ class BaseRepo(Generic[ModelType, CreateSchemaType, UpdateSchemaType], ABSRepo):
         return self.get_one(db, id)
 
     def delete(self, db: Session, id: int) -> Optional[Union[ModelType, Any]]:
-        result = db.query(self.model).filter(self.model.id ==
-                                             id).delete(synchronize_session=False)
+        result = db.query(self.model).filter(
+            self.model.id == id).delete(synchronize_session=False)
         db.commit()
         return result

@@ -1,14 +1,19 @@
+from fastapi.exceptions import RequestValidationError, ValidationError
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.encoders import jsonable_encoder
 from fastapi import FastAPI, Request, status
+from fastapi.responses import JSONResponse
+from db import settings
 import uvicorn
 
-from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.exceptions import RequestValidationError, ValidationError
-from exceptions import AppExceptionCase, AppException, app_exception_handler, generic_exception_handler
-
 import api.v1.routes
-from db import settings
+
+from exceptions import (
+    AppException,
+    AppExceptionCase,
+    app_exception_handler,
+    generic_exception_handler,
+)
 
 app = FastAPI(title='FastAPI Auth')
 
@@ -20,10 +25,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.exception_handler(AppExceptionCase)
 def custom_app_exception_handler(request: Request, exc: AppException):
     print(exc)
     return app_exception_handler(request, exc)
+
 
 @app.exception_handler(RequestValidationError)
 def request_validation_exception_handler(request: Request, exc: RequestValidationError):
@@ -41,6 +48,7 @@ def request_validation_exception_handler(request: Request, exc: RequestValidatio
         ),
     )
 
+
 @app.exception_handler(ValidationError)
 def validation_exception_handler(request: Request, exc: ValidationError):
     print(exc)
@@ -56,11 +64,13 @@ def custom_generic_exception_handler(request: Request, exc: Exception):
 # Root API
 @app.get("/")
 async def root():
-       return {"message": "FastAPI Authentication!"}
+    return {"message": "FastAPI Authentication!"}
 
 
 app.include_router(api.v1.routes.api_router, prefix=settings.API_V1_STR)
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="127.0.0.3", port=8000, reload=True, log_level="info")
+    uvicorn.run(
+        "main:app", host="127.0.0.3", port=8000, reload=True, log_level="info"
+    )

@@ -1,10 +1,10 @@
+from typing import Any, List, Optional, Type, TypeVar, Union
 from abc import ABC, abstractmethod
-from typing import Type, TypeVar, List, Optional, Union, Any
-from db import Base
-from models import BaseModel
 from sqlalchemy.orm import Session
+from models import BaseModel
+from db import Base
 
-ModelType = TypeVar('ModelType', bound=Base)
+ModelType = TypeVar('ModelType', bound=Base)  # type: ignore
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
 UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 

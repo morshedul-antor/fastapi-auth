@@ -1,17 +1,19 @@
+from schemas import ResultIn, UserAuthOut, UserIn, UserOut, UserUpdate
 from fastapi import APIRouter, Depends
 from api.v1.auth_deps import logged_in
-from schemas import UserIn, UserOut, UserAuthOut, UserUpdate, ResultIn
 from exceptions import handle_result
 from sqlalchemy.orm import Session
-from db import get_db
-from typing import List, Union
 from services import user_service
+from typing import List, Union
+from db import get_db
 
 router = APIRouter()
 
+
 @router.get('/', response_model=List[Union[ResultIn, List[UserOut]]])
 def all_user(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    all = user_service.get_with_pagination(db=db, skip=skip, limit=limit, descending=True, count_results=True)
+    all = user_service.get_with_pagination(
+        db=db, skip=skip, limit=limit, descending=True, count_results=True)
     return handle_result(all)
 
 

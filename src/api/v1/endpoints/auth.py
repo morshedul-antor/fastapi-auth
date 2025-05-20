@@ -1,13 +1,14 @@
+from schemas import Token, UserAuthOut, UserLogin
 from fastapi import APIRouter, Depends
-from schemas import UserLogin, UserAuthOut, Token
+from api.v1.auth_deps import logged_in
 from exceptions import handle_result
 from sqlalchemy.orm import Session
-from db import get_db
 from services import user_service
 from models import User
-from api.v1.auth_deps import logged_in
+from db import get_db
 
 router = APIRouter()
+
 
 @router.post('/login/', response_model=Token)
 def login(data_in: UserLogin, db: Session = Depends(get_db)):
